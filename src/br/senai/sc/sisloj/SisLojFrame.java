@@ -44,6 +44,10 @@ public class SisLojFrame extends javax.swing.JFrame {
         cl.show(painelPrincipal, "telaPadrao");
         
         this.setExtendedState(MAXIMIZED_BOTH);
+        
+        //Oculta os menus dos painéis rosa e amarelo
+        menPainelRosa.setEnabled(false);
+        menPainelAmarelo.setEnabled(false);
 
     }
 
