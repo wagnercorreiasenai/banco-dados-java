@@ -20,6 +20,8 @@ import javax.swing.JOptionPane;
  */
 public class SisLojFrame extends javax.swing.JFrame {
 
+    private CardLayout cl;
+
     /**
      * Creates new form SisLojFrame
      */
@@ -29,20 +31,16 @@ public class SisLojFrame extends javax.swing.JFrame {
         //Cria os componentes
         PainelRosa pRosa = new PainelRosa();
         PainelAmarelo pAmarelo = new PainelAmarelo();
-        CadastroCliente cadCli = new CadastroCliente();
         TelaPadrao tp = new TelaPadrao();
-        ListagemCliente lc = new ListagemCliente();
 
         painelPrincipal.add(pRosa, "painelRosa");
         painelPrincipal.add(pAmarelo, "painelAmarelo");
-        painelPrincipal.add(cadCli, "cadastroCliente");
         painelPrincipal.add(tp, "telaPadrao");
-        painelPrincipal.add(lc, "listaClientes");
 
         //Chamar a tela padrão aqui
-        CardLayout cl = (CardLayout) painelPrincipal.getLayout();
-        cl.show(painelPrincipal, "telaPadrao");
-        
+        this.cl = (CardLayout) painelPrincipal.getLayout();
+        this.cl.show(painelPrincipal, "telaPadrao");
+
         this.setExtendedState(MAXIMIZED_BOTH);
 
     }
@@ -147,23 +145,25 @@ public class SisLojFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menCadastrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCadastrarClienteActionPerformed
-        CardLayout cl = (CardLayout) painelPrincipal.getLayout();
-        cl.show(painelPrincipal, "cadastroCliente");
+        CadastroCliente cadCli = new CadastroCliente();
+        painelPrincipal.add(cadCli, "cadastroCliente");
+        this.cl.show(painelPrincipal, "cadastroCliente");
     }//GEN-LAST:event_menCadastrarClienteActionPerformed
 
     private void menListarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menListarClienteActionPerformed
-         CardLayout cl = (CardLayout) painelPrincipal.getLayout();
-        cl.show(painelPrincipal, "listaClientes");
+        ListagemCliente lc = new ListagemCliente();
+        painelPrincipal.add(lc, "listaClientes");
+        this.cl.show(painelPrincipal, "listaClientes");
     }//GEN-LAST:event_menListarClienteActionPerformed
 
     private void menPainelRosaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menPainelRosaActionPerformed
-        CardLayout cl = (CardLayout) painelPrincipal.getLayout();
-        cl.show(painelPrincipal, "painelRosa");
+
+        this.cl.show(painelPrincipal, "painelRosa");
     }//GEN-LAST:event_menPainelRosaActionPerformed
 
     private void menPainelAmareloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menPainelAmareloActionPerformed
-        CardLayout cl = (CardLayout) painelPrincipal.getLayout();
-        cl.show(painelPrincipal, "painelAmarelo");// TODO add your handling code here:
+
+        this.cl.show(painelPrincipal, "painelAmarelo");
     }//GEN-LAST:event_menPainelAmareloActionPerformed
 
     /**

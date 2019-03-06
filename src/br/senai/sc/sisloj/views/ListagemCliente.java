@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 public class ListagemCliente extends javax.swing.JPanel {
 
     private CardLayout cl;
+    private Cliente cliente;
 
     public ListagemCliente() {
         initComponents();
@@ -63,6 +64,21 @@ public class ListagemCliente extends javax.swing.JPanel {
 
     }
 
+    private void preencherCamposEdicao(int codigoCliente) {
+        ClienteDao cli = new ClienteDao();
+        try {
+            this.cliente = cli.getCliente(codigoCliente);
+            this.cpNome.setText(this.cliente.getNomcli());
+            this.cpEndereco.setText(this.cliente.getEndcli());
+            this.cpBairro.setText(this.cliente.getBaicli());
+            this.cpCep.setText("" + this.cliente.getCepcli());
+            this.cpComplemento.setText(this.cliente.getComcli());
+            this.cpCelular.setText("" + this.cliente.getCelcli());
+        } catch (SQLException ex) {
+            Logger.getLogger(ListagemCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void limparTabela() {
         ((DefaultTableModel) tblCliente.getModel()).setNumRows(0);
         tblCliente.updateUI();
@@ -101,6 +117,7 @@ public class ListagemCliente extends javax.swing.JPanel {
         jSeparator4 = new javax.swing.JSeparator();
         btnSalvar = new javax.swing.JButton();
         cpCelular = new javax.swing.JFormattedTextField();
+        btnEliminar = new javax.swing.JButton();
 
         setLayout(new java.awt.CardLayout());
 
@@ -144,25 +161,19 @@ public class ListagemCliente extends javax.swing.JPanel {
         painelListagem.setLayout(painelListagemLayout);
         painelListagemLayout.setHorizontalGroup(
             painelListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
         );
         painelListagemLayout.setVerticalGroup(
             painelListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
         );
 
         add(painelListagem, "card3");
 
         labelCadastroCliente.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        labelCadastroCliente.setText("Cadastro de cliente (Edição)");
+        labelCadastroCliente.setText("Editar cliente");
 
         labelNome.setText("Nome:");
-
-        cpNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cpNomeActionPerformed(evt);
-            }
-        });
 
         labelEnderecoLocalizacao.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         labelEnderecoLocalizacao.setText("Endereço e localização");
@@ -199,6 +210,13 @@ public class ListagemCliente extends javax.swing.JPanel {
             ex.printStackTrace();
         }
 
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout painelEdicaoLayout = new javax.swing.GroupLayout(painelEdicao);
         painelEdicao.setLayout(painelEdicaoLayout);
         painelEdicaoLayout.setHorizontalGroup(
@@ -225,14 +243,16 @@ public class ListagemCliente extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(labelCep)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cpCep, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
+                        .addComponent(cpCep, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE))
                     .addGroup(painelEdicaoLayout.createSequentialGroup()
                         .addComponent(labelComplemento)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cpComplemento))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelEdicaoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEliminar))
                     .addGroup(painelEdicaoLayout.createSequentialGroup()
                         .addGroup(painelEdicaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelCadastroCliente)
@@ -285,23 +305,21 @@ public class ListagemCliente extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSalvar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(painelEdicaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnEliminar))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         add(painelEdicao, "card4");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cpNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpNomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cpNomeActionPerformed
-
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        Cliente cli = new Cliente();
-        cli.setNomcli(cpNome.getText());
-        cli.setEndcli(cpEndereco.getText());
-        cli.setBaicli(cpBairro.getText());
-        cli.setComcli(cpComplemento.getText());
+
+        this.cliente.setNomcli(cpNome.getText());
+        this.cliente.setEndcli(cpEndereco.getText());
+        this.cliente.setBaicli(cpBairro.getText());
+        this.cliente.setComcli(cpComplemento.getText());
 
         String cep = cpCep.getText();
         cep = cep.replaceAll("[^0-9]", "");
@@ -309,14 +327,14 @@ public class ListagemCliente extends javax.swing.JPanel {
         String celular = cpCelular.getText();
         celular = celular.replaceAll("[^0-9]", "");
 
-        cli.setCepcli(Long.parseLong(cep));
-        cli.setCelcli(Long.parseLong(celular));
+        this.cliente.setCepcli(Long.parseLong(cep));
+        this.cliente.setCelcli(Long.parseLong(celular));
 
         //Inseri o cliente no banco de dados
         ClienteDao cliDao = new ClienteDao();
         try {
-            cliDao.inserir(cli);
-            JOptionPane.showMessageDialog(null, "Cliente inserido com sucesso !");
+            cliDao.alterar(this.cliente);
+            JOptionPane.showMessageDialog(null, "Cadastro atualizado com sucesso !");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Falha ao inserir cliente !");
             Logger.getLogger(CadastroCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -324,15 +342,47 @@ public class ListagemCliente extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void painelListagemComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_painelListagemComponentShown
+        this.limparTabela();
         this.popularTabela();
     }//GEN-LAST:event_painelListagemComponentShown
 
     private void tblClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClienteMouseClicked
-        JOptionPane.showMessageDialog(null, "Você clicou na linha: " + tblCliente.getSelectedRow());
+        int linha = tblCliente.getSelectedRow();
+
+        if (linha != -1) {
+            String codigo = tblCliente.getValueAt(linha, 0).toString();
+            int codigoCliente = Integer.parseInt(codigo);
+            this.preencherCamposEdicao(codigoCliente);
+            this.cl.show(this, "painelEdicao");
+        }
+
     }//GEN-LAST:event_tblClienteMouseClicked
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+
+        Object[] options = {"Sim", "Não"};
+        int opcaoSelecionada = JOptionPane.showOptionDialog(null, "Deseja realmente eliminar este cliente ?", "Atenção!", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+     
+        if (opcaoSelecionada == 0) {
+            
+            ClienteDao cliDao = new ClienteDao();
+            
+            try {
+                cliDao.eliminar(this.cliente.getCodcli());
+                this.limparTabela();
+                this.popularTabela();
+                this.cl.show(this, "painelListagem");
+            } catch (SQLException ex) {
+                Logger.getLogger(ListagemCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JTextField cpBairro;
     private javax.swing.JFormattedTextField cpCelular;
